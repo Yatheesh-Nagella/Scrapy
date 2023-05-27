@@ -38,7 +38,7 @@ class BookscraperPipeline:
         if len(split_string_array) < 2:
             adapter['availability'] = 0
         else:
-            availability_array = split_string_array[1].split('')
+            availability_array = split_string_array[1].split(' ')
             adapter['availability'] = int(availability_array[0])
 
         ## Reviews --> convert string to number
