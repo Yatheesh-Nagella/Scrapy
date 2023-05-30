@@ -1,5 +1,6 @@
 # Ignore the file
 
+```
 cd part/bookscraper/bookscraper/spiders
 virtualenv --version
 python3 -m venv env
@@ -7,19 +8,24 @@ source env/bin/activate
 (env) gitpod /workspace/Scrapy/part/bookscraper/bookscraper/spiders (main) $ pip install ipython
 terminal > scrapy shell
 fetch('https://books.toscrape.com/')
+```
 
 -- Main cmd 
-(env) gitpod /workspace/Scrapy/part/bookscraper/bookscraper/spiders (main) $ scrapy crawl bookspider
+`(env) gitpod /workspace/Scrapy/part/bookscraper/bookscraper/spiders (main) $ scrapy crawl bookspider`
 
-scrapy crawl bookspider -O bookdata.csv # adds data to csv file, writes&overwrites the data
-scrapy crawl bookspider -o bookdata.csv # appends data from stop 
+`scrapy crawl bookspider -O bookdata.csv # adds data to csv file, writes&overwrites the data`
+`scrapy crawl bookspider -o bookdata.csv # appends data from stop `
+
 ----
-
+```
 python3 -m pip install --user virtualenv
 python3 -m venv env
 source env/bin/activate
 deactivate
+```
+----
 
+```
 pip install scrapy
 scrapy startproject bookscraper
 books.toscrape.com
@@ -35,9 +41,10 @@ len(books) # length of books : no of books
 book.css('h3 a::text').get() #to get h3 and text
 book.css('.product_price .price_color::Text').get() 
 book.css('h3 a').attrib['href'] #to get link to the book
+```
+`scrapy crawl bookspider #cmd to run below bookspider`
 
-scrapy crawl bookspider #cmd to run below bookspider
-
+```
 import scrapy
 
 class BookspiderSpider(scrapy.Spider):
@@ -54,13 +61,14 @@ class BookspiderSpider(scrapy.Spider):
                 'price': book.css('.product_price .price_color::Text').get(),
                 'url' : book.css('h3 a').attrib['href']
             }
+```
 
-response.css('li.next a::attr(href)').get() #Out[3]:'catalogue/page-2.html'
-response.css('i.icon-ok::text').get()
+`response.css('li.next a::attr(href)').get() #Out[3]:'catalogue/page-2.html'`
+`response.css('i.icon-ok::text').get()`
 
-DAy-2
-# Below code goes through all the books from page 1 to last page collects name, price, url
-
+## DAy-2
+### Below code goes through all the books from page 1 to last page collects name, price, url
+```
 import scrapy
 
 class BookspiderSpider(scrapy.Spider):
@@ -85,20 +93,21 @@ class BookspiderSpider(scrapy.Spider):
                 next_page_url = 'https://books.toscrape.com/catalogue/' + next_page    
             yield response.follow(next_page_url, callback = self.parse)
 
+```
+`.gitignore file:`
 
-
-.gitignore file:
-
+```
 # Byte-compiled / optimized / DLL files
 __pycache__/
 # Distribution / packaging
 .Python
 env/
 build/
+```
 
-
-Build discover and extraction spider:
-(env) gitpod /workspace/Scrapy/part/bookscraper/bookscraper/spiders (main) $ scrapy shell
+### Build discover and extraction spider:
+`(env) gitpod /workspace/Scrapy/part/bookscraper/bookscraper/spiders (main) $ scrapy shell`
+```
 fetch('https://books.toscrape.com/catalogue/a-light-in-the-attic_1000/index.html')
 response.css('.product_main h1::text').get()
 table_rows = response.css("table tr") # gets the no of tables used in description
@@ -107,9 +116,9 @@ table_rows[1].css('td ::text').get()
 Out[9]: 'Books'
 response.css('p.star-rating').attrib['class']
 Out[12]: 'star-rating Three'
-
-response.css('p.price_color ::text').get()
-
+```
+`response.css('p.price_color ::text').get()`
+```
 import scrapy
 
 class BookspiderSpider(scrapy.Spider):
@@ -155,31 +164,32 @@ class BookspiderSpider(scrapy.Spider):
             'description' : response.xpath("//div[@id='product_description']/following-sibling::p/text()").get(),
             'price': response.css('p.price_color ::text').get(),
         }
-
-scrapy crawl bookspider -O bookdata.json
-scrapy crawl bookspider -O bookdata.csv
+```
+`scrapy crawl bookspider -O bookdata.json`
+`scrapy crawl bookspider -O bookdata.csv`
 
 -----------------------------------
 
-cleaning data with item pipelines:
+#### cleaning data with item pipelines:
 items.py helps in understanding/tracking items being stored in data file
 pipeines.py transformation of raw data into desirable format to store in the DB
 
 -----------------------------------
 
-saving files to DB:
+#### saving files to DB:
 
-problem occured install and connecting to mysql
+*problem occured install and connecting to mysql*
 
-settings.py 
+**settings.py** 
+'''
 ITEM_PIPELINES = {
     "bookscraper.pipelines.BookscraperPipeline": 300,
     'bookscraper.pipelines.SaveToMySQLPipeline': 400,
 }
-
+'''
 ----------------------------------------
 
-Fake user-agents and headers:
+#### Fake user-agents and headers:
 
 ctrl+shit+i;
 Headers,
@@ -190,7 +200,7 @@ signup to get user_agent and header from scrapops
 
 ------------------------------------------
 
-API proxies:
+#### API proxies:
 
 pip install scrapy-rotating-proxies
 
