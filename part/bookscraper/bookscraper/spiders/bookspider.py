@@ -1,5 +1,6 @@
 import scrapy
-from bookscraper.items import BookItem  
+from bookscraper.items import BookItem
+import random  
 
 # The spider crawls from page 1 to final page extracts items
 
@@ -7,6 +8,13 @@ class BookspiderSpider(scrapy.Spider):
     name = 'bookspider'
     allowed_domains = ['books.toscrape.com']
     start_urls = ['https://books.toscrape.com/']
+
+    # Overwrites feeds
+    custom_settings = {
+        'FEEDS': {
+            'booksdata.json': {'format': 'json', 'overwrite': True},
+        }
+    }
 
     def parse(self, response):
         books = response.css('article.product_pod')

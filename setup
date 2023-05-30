@@ -1,0 +1,12 @@
+#! /bin/bash
+
+echo "start"
+
+# Change directory to the desired location
+cd part/bookscraper/bookscraper/spiders
+
+# Create and activate the virtual environment
+python3 -m venv env
+source env/bin/activate
+
+echo "done!"

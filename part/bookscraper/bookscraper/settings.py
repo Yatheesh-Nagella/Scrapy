@@ -12,6 +12,27 @@ BOT_NAME = "bookscraper"
 SPIDER_MODULES = ["bookscraper.spiders"]
 NEWSPIDER_MODULE = "bookscraper.spiders"
 
+#Automatically creates booksdata.json file upon calling 'scrapy crawl bookspider' 
+FEEDS = {
+    'booksdata.json': {'format': 'json'},
+}
+
+#USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36"
+
+SCRAPEOPS_API_KEY = 'YOUR_API_KEY_HERE' # signup at https://scrapeops.io it is free 
+SCRAPEOPS_FAKE_USER_AGENT_ENDPOINT = 'https://headers.scrapeops.io/v1/user-agents'
+SCRAPEOPS_FAKE_USER_AGENT_ENABLED = True
+SCRAPEOPS_NUM_RESULTS = 5
+
+# https://geonode.com/free-proxy-list   - choose proxy depending on the purpose
+ROTATING_PROXY_LIST = [
+    '62.77.240.27:8080', #HU
+    '75.169.63.196:4145', #USA
+    '162.19.7.61:40633', #FR
+]
+
+# Having more proxies initliaze them in 'proxies.txt'
+# ROTATING_PROXY_LIST_PATH = '/my/path/proxies.txt'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = "bookscraper (+http://www.yourdomain.com)"
@@ -50,9 +71,12 @@ ROBOTSTXT_OBEY = True
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
-#DOWNLOADER_MIDDLEWARES = {
-#    "bookscraper.middlewares.BookscraperDownloaderMiddleware": 543,
-#}
+DOWNLOADER_MIDDLEWARES = {
+    "bookscraper.middlewares.BookscraperDownloaderMiddleware": 543,
+    "bookscraper.middlewares.ScrapeOpsFakeBrowserHeaderAgentMiddleware": 400,
+    'rotating_proxies.middlewares.RotatingProxyMidlleware': 610,
+    'rotating_proxies.middlewares.BanDetectionMiddleware': 620,
+}
 
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html
@@ -64,6 +88,9 @@ ROBOTSTXT_OBEY = True
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
     "bookscraper.pipelines.BookscraperPipeline": 300,
+    #'bookscraper.pipelines.SaveToMySQLPipeline': 400,
+    'rotating_proxies.middlewares.RotatingProxyMidlleware': 610,
+    'rotating_proxies.middlewares.BanDetectionMiddleware': 620,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
