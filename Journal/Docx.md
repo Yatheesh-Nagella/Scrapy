@@ -10,11 +10,11 @@ terminal > scrapy shell
 fetch('https://books.toscrape.com/')
 ```
 
--- Main cmd 
-`(env) gitpod /workspace/Scrapy/part/bookscraper/bookscraper/spiders (main) $ scrapy crawl bookspider`
+*Main cmd* 
+- `(env) gitpod /workspace/Scrapy/part/bookscraper/bookscraper/spiders (main) $ scrapy crawl bookspider`
 
-`scrapy crawl bookspider -O bookdata.csv # adds data to csv file, writes&overwrites the data`
-`scrapy crawl bookspider -o bookdata.csv # appends data from stop `
+- `scrapy crawl bookspider -O bookdata.csv # adds data to csv file, writes&overwrites the data`
+- `scrapy crawl bookspider -o bookdata.csv # appends data from stop `
 
 ----
 ```
@@ -63,10 +63,10 @@ class BookspiderSpider(scrapy.Spider):
             }
 ```
 
-`response.css('li.next a::attr(href)').get() #Out[3]:'catalogue/page-2.html'`
-`response.css('i.icon-ok::text').get()`
+- `response.css('li.next a::attr(href)').get() #Out[3]:'catalogue/page-2.html'`
+- `response.css('i.icon-ok::text').get()`
 
-## DAy-2
+## Day-2
 ### Below code goes through all the books from page 1 to last page collects name, price, url
 ```
 import scrapy
@@ -165,43 +165,43 @@ class BookspiderSpider(scrapy.Spider):
             'price': response.css('p.price_color ::text').get(),
         }
 ```
-`scrapy crawl bookspider -O bookdata.json`
-`scrapy crawl bookspider -O bookdata.csv`
+- `scrapy crawl bookspider -O bookdata.json`
+- `scrapy crawl bookspider -O bookdata.csv`
 
 -----------------------------------
 
-#### cleaning data with item pipelines:
-items.py helps in understanding/tracking items being stored in data file
-pipeines.py transformation of raw data into desirable format to store in the DB
+## Cleaning data with item pipelines:
+- items.py helps in understanding/tracking items being stored in data file
+- pipeines.py transformation of raw data into desirable format to store in the DB
 
 -----------------------------------
 
-#### saving files to DB:
+## saving files to DB:
 
 *problem occured install and connecting to mysql*
 
 **settings.py** 
-'''
+```
 ITEM_PIPELINES = {
     "bookscraper.pipelines.BookscraperPipeline": 300,
     'bookscraper.pipelines.SaveToMySQLPipeline': 400,
 }
-'''
+```
 ----------------------------------------
 
-#### Fake user-agents and headers:
+## Fake user-agents and headers:
 
-ctrl+shit+i;
-Headers,
-user-agent, # useragentstring.com - Fine while doing small scale scraping, not a good thing for big scale.
+- ctrl+shit+i;
+- Headers,
+- user-agent, # useragentstring.com - Fine while doing small scale scraping, not a good thing for big scale.
 
 
-signup to get user_agent and header from scrapops
+**signup to get user_agent and header from scrapops**
 
 ------------------------------------------
 
-#### API proxies:
+## API proxies:
 
-pip install scrapy-rotating-proxies
+- pip install scrapy-rotating-proxies
 
-free proxy list #genonode
+- free proxy list #genonode
